@@ -9,17 +9,30 @@
     <?php
         $zodiac = array("monkey", "rooster", "dog", "pig", "rat", "ox", "tiger", "rabbit", "dragon", 
         "snake", "horse", "goat");
+        $error = '';
+        if (isset($_POST["year"])) {
+            $year = $_POST["year"];
+            if ($year < 1900 || $year > date("Y") + 1) {
+                $error = "Error: Year must be between 1900 and " . (date("Y") + 1) . ".";
+            } else {
+                $remainder = $year % 12;
+                $animal = $zodiac[$remainder];
+                echo "<h1>Result</h1>";
+                echo "<p>You were born under the sign of the $animal.</p>";
+                echo "<img src='images/$animal.png' alt='$animal'>";
+            }
+        }
     ?>
-    <form action="form_submit.php" method="post">
+    <form action="index.php" method="post">
         <label for="year">Enter your birth year:</label>
-        <input type="number" name="year" id="year" min="1900" max="<?php echo date("Y") + 1; ?>">
+        <input type="number" name="year" id="year">
         <input type="submit" value="Submit">
         <input type="reset" value="Clear">
     </form>
     <?php
-                if ($year < 1900 || $year > date("Y") + 1) {
-                    echo "<p>Error: Year must be between 1900 and " . (date("Y") + 1) . ".</p>";
-                }
+        if($error != ''){
+            echo "<p style='color:red;'>$error</p>";
+        }
     ?>
 </body>
 </html>
